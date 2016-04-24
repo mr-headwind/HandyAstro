@@ -1,0 +1,50 @@
+ LICENSE
+ -------
+    Copyright (C) 2016 Anthony Buckley
+
+    This file is part of HandyAstro.
+
+    It is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    It is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with HandyAstro.  If not, see <http://www.gnu.org/licenses/>.
+
+
+ DESCRIPTION
+ -----------
+    HandyAstro is a collection of miscellaneous programs, shell scripts, and anything
+    else really, that I've created and used in my astronmy wanderings.
+
+
+ LOCATION
+ --------
+    https://github.com/mr-headwind/HandyAstro
+
+
+ CONTENTS
+ --------
+    avi_to_seq:
+
+    This is a shell script to convert an 'avi' file to a sequence of images. This is 
+    sometimes useful for processing astro images from individual images rather than 
+    from a video file. It may give improved results.
+
+    Note that it uses the 'ffmpeg' command line tool. This is free software.
+    See https://www.ffmpeg.org/legal.html for details. It may be necessary to install
+    this. (Hint: Ubuntu - use 'sudo apt-get install ffmpeg').
+
+    While I have used this for the purpose described, it has NOT been extensively tested
+    and may contain bugs or shortcomings.
+
+
+ BUGS & SUGGESTIONS
+ ------------------
+    Email any bugs, requests or suggestions to astroctc_AB@gmail.com

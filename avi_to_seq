@@ -1,0 +1,138 @@
+#!/bin/bash
+
+
+#
+#  Copyright (C) 2016 Anthony Buckley
+# 
+#  This file is the shell script "avi_to_seq".
+# 
+#  It is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#  
+#  It is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with "avi_to_seq". If not, see <http://www.gnu.org/licenses/>.
+#
+
+
+# Name:		avi_to_seq
+#
+# Description:	Shell script to convert an avi file to a sequence of images
+#
+# Requirement:	ffmpeg (Hint: Ubuntu - use 'sudo apt-get install ffmpeg' to install if necessary
+#
+# Usage:	avi_to_seq -f name [-t type] [-n n] [-d directory] [-h]
+#
+# Options:	-f name		The name of the input avi file
+#		-t type		eg. 'bmp' or 'jpg' (default: bmp). Optional
+#		-n n		Size (numbers) of image sequence (default: 5). Optional
+#		-d dir		Output directory (default: current). Optional
+#		-h 		help
+
+
+# Usage
+
+usage() {
+echo "avi_to_seq -f name [-t type] [-n n] [-d directory] [-h]"
+exit 1
+}
+
+# Help details
+
+help() {
+echo "avi_to_seq -f name [-t type] [-n n] [-d directory] [-h]"
+echo "    -f name	The name of the input avi file"
+echo "    -t type	Either 'bmp' or 'jpg' (default: bmp). Optional"
+echo "    -n n   	Size (numbers) of image sequence (default: 7). Optional"
+echo "    -d dir	Output directory (default: current). Optional"
+echo "    -h 		help"
+exit 0
+}
+
+
+# Main
+
+echo "avi_to_seq starting..."
+
+# Initial
+
+img_type="bmp"
+avi_file=""
+num=7
+dir="."
+
+# Parse options and validation
+
+while getopts ":f:t:n:d:h" arg;
+do
+    case $arg in
+    	f)
+	    avi_file=$OPTARG
+	    ;;
+	t)
+	    img_type=$OPTARG
+	    ;;
+	n)
+	    num=$OPTARG
+	    ;;
+	d)
+	    dir=$OPTARG
+	    ;;
+	h)
+	    help
+	    ;;
+	:)
+	    echo "Error: Argument $OPTARG requires an argument"
+	    usage
+	    ;;
+	?)
+	    echo "Error: $OPTARG is not a valid option"
+	    usage
+	    ;;
+    esac
+done
+
+if [ -z "${avi_file}" ] 
+then
+    echo "Error: No input file found"
+    usage
+fi
+
+if [ ! -f "${avi_file}" ] 
+then
+    echo "Error: Input file does not exist"
+    usage
+fi
+
+# Create output directory if needed
+
+if [ "${dir}" != "." ] && [ ! -d "${dir}" ]
+then
+    echo "Note: Directory $dir does not exist, creating..."
+    mkdir $dir
+fi
+
+# Split the video up
+
+out_fmt='img_%0'$num'd.'$img_type
+
+echo "ffmpeg -y -hide_banner -i $avi_file $dir/$out_fmt"
+ffmpeg -y -hide_banner -i $avi_file $dir/$out_fmt > /tmp/avi_to_seq.log 2>&1
+rc=$?
+
+# Check success
+
+if [ $rc != 0 ]
+then
+    echo "avi_to_seq encountered some error ($rc). See log /tmp/avi_to_seq.log"
+    exit $rc
+else
+    echo "avi_to_seq success"
+    exit 0
+fi
