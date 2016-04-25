@@ -130,9 +130,9 @@ rc=$?
 
 if [ $rc != 0 ]
 then
-    echo "avi_to_seq encountered some error ($rc). See log /tmp/avi_to_seq.log"
+    echo "avi_to_seq encountered an error ($rc). Check /tmp/avi_to_seq.log for details."
     exit $rc
 else
-    echo "avi_to_seq success"
+    echo "avi_to_seq success. See /tmp/avi_to_seq.log."
     exit 0
 fi
